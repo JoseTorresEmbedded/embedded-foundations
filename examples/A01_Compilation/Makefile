@@ -4,10 +4,13 @@ STD := -std=c11
 
 WARNINGS := -Wall -Wextra -Werror
 
-CFLAGS := $(STD) $(WARNINGS)
+DEPFLAGS := -MMD -MP
+
+CFLAGS := $(STD) $(WARNINGS) $(DEPFLAGS)
 
 TARGET := program
 OBJECTS := main.o math.o
+DEPS := $(OBJECTS:.o=.d)
 
 .PHONY: all clean
 
@@ -16,10 +19,10 @@ all: $(TARGET)
 $(TARGET): $(OBJECTS)
 	$(CC) $^ -o $@
 
-main.o math.o: math.h
-
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJECTS) $(TARGET) $(DEPS)
+
+-include $(DEPS)

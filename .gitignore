@@ -4,3 +4,4 @@
 program
 a.out
 build/
+*.d
