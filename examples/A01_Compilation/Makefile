@@ -6,12 +6,24 @@ WARNINGS := -Wall -Wextra -Werror
 
 DEPFLAGS := -MMD -MP
 
-CFLAGS := $(STD) $(WARNINGS) $(DEPFLAGS)
+BUILD ?= debug
 
-BUILD_DIR := build
-ifeq ($(strip $(BUILD_DIR)),)
-$(error BUILD_DIR está vacía; abortando)
+ifeq ($(BUILD),debug)
+    OPTFLAGS := -O0 -g3
+else ifeq ($(BUILD),release)
+    OPTFLAGS := -O2 -DNDEBUG
+else
+    $(error BUILD='$(BUILD)' no es válido; usa debug o release)
 endif
+
+CFLAGS := $(STD) $(WARNINGS) $(DEPFLAGS) $(OPTFLAGS)
+
+BUILD_ROOT := build
+ifeq ($(strip $(BUILD_ROOT)),)
+$(error BUILD_ROOT está vacía; abortando)
+endif
+
+BUILD_DIR := $(BUILD_ROOT)/$(BUILD)
 
 SRCS := main.c math.c
 
@@ -31,6 +43,6 @@ $(BUILD_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_ROOT)
 
 -include $(DEPS)
