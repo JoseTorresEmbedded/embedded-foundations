@@ -14,13 +14,11 @@ OBJECTS := main.o math.o
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	@echo ">> objetivo=[$@]  todos=[$^]  primero=[$<]"
 	$(CC) $^ -o $@
 
 main.o math.o: math.h
 
 %.o: %.c
-	@echo ">> objetivo=[$@]  fuente=[$<]  stem=[$*]"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
