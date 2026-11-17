@@ -13,8 +13,10 @@ ifeq ($(strip $(BUILD_DIR)),)
 $(error BUILD_DIR está vacía; abortando)
 endif
 
+SRCS := main.c math.c
+
 TARGET := $(BUILD_DIR)/program
-OBJECTS := $(BUILD_DIR)/main.o $(BUILD_DIR)/math.o
+OBJECTS := $(patsubst %.c,$(BUILD_DIR)/%.o,$(SRCS))
 DEPS := $(OBJECTS:.o=.d)
 
 .PHONY: all clean
