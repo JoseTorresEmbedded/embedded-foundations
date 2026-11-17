@@ -4,23 +4,45 @@ STD := -std=c11
 
 WARNINGS := -Wall -Wextra -Werror
 
-CFLAGS := $(STD) $(WARNINGS)
+DEPFLAGS := -MMD -MP
 
-TARGET := program
-OBJECTS := main.o math.o
+BUILD ?= debug
+
+ifeq ($(BUILD),debug)
+    OPTFLAGS := -O0 -g3
+else ifeq ($(BUILD),release)
+    OPTFLAGS := -O2 -DNDEBUG
+else
+    $(error BUILD='$(BUILD)' no es válido; usa debug o release)
+endif
+
+CFLAGS := $(STD) $(WARNINGS) $(DEPFLAGS) $(OPTFLAGS)
+
+BUILD_ROOT := build
+ifeq ($(strip $(BUILD_ROOT)),)
+$(error BUILD_ROOT está vacía; abortando)
+endif
+
+BUILD_DIR := $(BUILD_ROOT)/$(BUILD)
+
+SRCS := main.c math.c
+
+TARGET := $(BUILD_DIR)/program
+OBJECTS := $(patsubst %.c,$(BUILD_DIR)/%.o,$(SRCS))
+DEPS := $(OBJECTS:.o=.d)
 
 .PHONY: all clean
 
 all: $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(CC) $(OBJECTS) -o $(TARGET)
+	$(CC) $^ -o $@
 
-main.o: main.c math.h
-	$(CC) $(CFLAGS) -c main.c -o main.o
-
-math.o: math.c math.h
-	$(CC) $(CFLAGS) -c math.c -o math.o
+$(BUILD_DIR)/%.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -rf $(BUILD_ROOT)
+
+-include $(DEPS)
