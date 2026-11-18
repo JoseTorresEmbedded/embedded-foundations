@@ -31,7 +31,7 @@ int main(void)
     printf("%s\n", message);
 
     printf("\n");
-    printf("message              %p\n", (void *)message);
+    printf("message              %p\n", (const void *)message);
     printf("global_initialized   %p\n", (void *)&global_initialized);
     printf("static_initialized   %p\n", (void *)&static_initialized);
     printf("local_static         %p\n", (void *)&local_static);
@@ -39,6 +39,24 @@ int main(void)
     printf("static_uninitialized %p\n", (void *)&static_uninitialized);
     printf("heap_value           %p\n", (void *)heap_value);
     printf("local                %p\n", (void *)&local);
+
+    FILE *maps = fopen("/proc/self/maps", "r");
+
+    if (maps == NULL)
+    {
+        free(heap_value);
+        return EXIT_FAILURE;
+    }
+
+    char line[256];
+
+    printf("\n");
+    while (fgets(line, sizeof line, maps) != NULL)
+    {
+        fputs(line, stdout);
+    }
+
+    fclose(maps);
 
     free(heap_value);
 
