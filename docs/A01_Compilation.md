@@ -229,11 +229,24 @@ Result
 
 ```text
 D global_initialized
-C global_uninitialized
+B global_uninitialized
 d static_initialized
 b static_uninitialized
 R message
 ```
+
+> **Correction (2026-11-18, found during A02):** this result originally showed
+> `C global_uninitialized` (a *common* symbol). With the toolchain used in this
+> repository (GCC 11.4), `-fno-common` is the default, and `nm` reports `B`
+> (`.bss`). `C` only appears when compiling with `-fcommon`. Verified with:
+>
+> ```text
+> $ printf 'int global_uninitialized;\n' > common.c
+> $ gcc -std=c11 -c common.c -o common.o && nm common.o
+> 0000000000000000 B global_uninitialized
+> $ gcc -std=c11 -fcommon -c common.c -o common2.o && nm common2.o
+> 0000000000000004 C global_uninitialized
+> ```
 
 ## Observation
 

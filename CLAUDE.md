@@ -98,7 +98,7 @@ This repository is responsible for:
 - Each module lives at `examples/<Module>_<Topic>/` (e.g.
   `examples/A01_Compilation/`), buildable independently.
 - Each module's build uses the flags already established in
-  `examples/A01_Compilation/Makefile`: `-std=c11 -Wall -Wextra -Werror`.
+  `examples/A01_Compilation/Makefile`: `-std=c11 -Wall -Wextra -Wcast-qual -Werror`.
   No warning gets silently suppressed — a warning is either fixed or
   understood and explained in the doc, never flagged away to make the
   build pass.

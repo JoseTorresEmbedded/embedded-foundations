@@ -46,13 +46,13 @@ embedded-foundations/
 │
 ├── docs/
 │   ├── A01_Compilation.md
-│   ├── A02_Memory.md
+│   ├── A02_MemoryLayout.md
 │   ├── Glossary.md
 │   └── ...
 │
 ├── examples/
 │   ├── A01_Compilation/
-│   ├── A02_Memory/
+│   ├── A02_MemoryLayout/
 │   └── ...
 │
 ├── include/
@@ -84,7 +84,7 @@ embedded-foundations/
 | Module | Status |
 |----------|:------:|
 | A01 - Compilation Process | ✅ |
-| A02 - Memory Layout | ⏳ |
+| A02 - Memory Layout | ✅ |
 | A03 - Stack | ⏳ |
 | A04 - Heap | ⏳ |
 | A05 - Sections (.text, .data, .bss, .rodata) | ⏳ |
@@ -92,6 +92,9 @@ embedded-foundations/
 | A07 - Startup Code | ⏳ |
 | A08 - ABI | ⏳ |
 | A09 - Calling Convention | ⏳ |
+
+> **Scope:** A02 covers where each variable lives and the memory map of a running process.
+> The detailed study of ELF sections (`readelf -S`, `size`, why `.bss` takes no file space) belongs to A05.
 
 ---
 
@@ -145,7 +148,8 @@ embedded-foundations/
 |--------|----------|
 | Phase 0 | ✅ Complete |
 | A01 | ✅ Complete |
-| A02 | 🔄 In Progress |
+| A02 | ✅ Complete |
+| A03 | ⏳ Next |
 
 ---
 
@@ -173,7 +177,7 @@ GNU Binutils
 Build System
 
 - Make
-- CMake (coming soon)
+- CMake (`examples/A01_Compilation/CMakeLists.txt`)
 
 ---
 
@@ -229,6 +233,7 @@ The long-term objective is to acquire the knowledge required for professional em
 | Module | Documentation |
 |----------|---------------|
 | A01 - Compilation Process | docs/A01_Compilation.md |
+| A02 - Memory Layout | docs/A02_MemoryLayout.md |
 
 ---
 
