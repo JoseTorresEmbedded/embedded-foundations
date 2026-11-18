@@ -2,7 +2,7 @@ CC := gcc
 
 STD := -std=c11
 
-WARNINGS := -Wall -Wextra -Werror
+WARNINGS := -Wall -Wextra -Wcast-qual -Werror
 
 DEPFLAGS := -MMD -MP
 
